@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"> 
+
+<h:head>
+</h:head> 
+<h:body>
+	<ui:composition template="/WEB-INF/resources/facelets/template.xhtml">
+		<ui:define name="tituloPagina">
+			<p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
+			<h1>#{msg.fprtitulo}</h1>
+		</ui:define>
+		<ui:define name="conteudoPagina">
+
+		<h:form id="formulario" prependId="false" lang="#{msg.language}" style="display: block">
+           		<!-- Local -->
+                   <h:outputLabel for="latitude" value="#{msg.latitude}*:" class="ui-widget-content ui-widget" style="border:none;"/>
+                   <p:inputText id="latitude" value="#{fPontoMB.localTO.latitude}" label="#{msg.latitude}"/>
+                   <br/>
+                   <h:outputLabel for="longitude" value="#{msg.longitude}*:" class="ui-widget-content ui-widget" style="border:none;"/>
+                   <p:inputText id="longitude" value="#{fPontoMB.localTO.longitude}" label="#{msg.longitude}"/>
+                   <br/>
+                   <h:outputLabel for="descricao" value="#{msg.descricao}:" class="ui-widget-content ui-widget" style="border:none;"/>
+                   <p:inputText id="descricao" value="#{fPontoMB.localTO.descricao}" />
+                   <br/>
+                   <br/>
+                   
+                   <!-- Endereco -->
+                   <p:fieldset legend="#{msg.endereco}" style="margin-bottom:20px">
+                    <h:panelGrid columns="2">
+	                    <h:outputLabel for="rua" value="#{msg.rua}:" />
+	                    <p:inputText id="rua" value="#{fPontoMB.localTO.endereco.rua}" />
+
+	                    <h:outputLabel for="numero" value="#{msg.numero}:" />
+	                    <p:inputText id="numero" value="#{fPontoMB.localTO.endereco.numero}" label="#{msg.numero}"/>
+
+	                    <h:outputLabel for="bairro" value="#{msg.bairro}:" />
+	                    <p:inputText id="bairro" value="#{fPontoMB.localTO.endereco.bairro}" />
+
+	                    <h:outputLabel for="cidade" value="#{msg.cidade}:" />
+	                    <p:inputText id="cidade" value="#{fPontoMB.localTO.endereco.cidade}" />
+
+	                    <h:outputLabel for="estado" value="#{msg.estado}:" />
+	                    <p:inputText id="estado" value="#{fPontoMB.localTO.endereco.estado}" />
+                    </h:panelGrid>
+                   </p:fieldset>
+                   <h:outputLabel value="" />
+                   
+                   <!-- Classificacao -->
+				<p:fieldset id="classificacao" legend="#{msg.classificacao}" style="margin-bottom:20px">
+					<h:panelGrid columns="2">
+						<h:outputLabel for="tipo" value="#{msg.tipo}*:" />
+						<p:selectOneMenu id="tipo" value="#{fPontoMB.localTO.classificacao.tipo}" >
+							<f:selectItem itemLabel="#{msg.selecione}" itemValue=""/>
+							<f:selectItems value="#{fPontoMB.localTO.classificacao.tipos}" 
+								var="t" itemLabel="#{t.item}" itemValue="#{t.valor}"/>										
+							<p:ajax process="@this" update=":formulario:classificacao" />
+						</p:selectOneMenu>
+						
+						<h:outputLabel for="tamanho" value="#{msg.tamanho}:" 
+							rendered="#{fPontoMB.localTO.classificacao.tipo eq 'residencial'}" />
+						<p:inputText id="tamanho" value="#{fPontoMB.localTO.classificacao.tamanho}" lang="#{msg.tamanho}"
+							rendered="#{fPontoMB.localTO.classificacao.tipo eq 'residencial'}"/>
+
+						<h:outputLabel for="atividade" value="#{msg.atividade}:" 
+							rendered="#{fPontoMB.localTO.classificacao.tipo eq 'comercial'}"/>
+						<p:inputText id="atividade" value="#{fPontoMB.localTO.classificacao.atividade}" 
+							rendered="#{fPontoMB.localTO.classificacao.tipo eq 'comercial'}"/>
+							
+					</h:panelGrid>
+				</p:fieldset>
+				<h:outputLabel value="" />
+                   
+                   <p:panel style="border: none;float:right">
+                       <p:commandButton value="#{msg.salvar}" actionListener="#{fPontoMB.atualizar()}" ajax="false"/>
+                       <p:button value="#{msg.voltar}" outcome="index" />
+                   </p:panel>
+
+            </h:form>
+        
+		</ui:define>
+	</ui:composition>
+</h:body> 
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"> 
+
+<h:head>
+</h:head> 
+<h:body>
+	<ui:composition template="/WEB-INF/resources/facelets/template.xhtml">
+		<ui:define name="tituloPagina">
+			<p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
+			<h1>#{msg.prtitulo}</h1>
+		</ui:define>
+		<ui:define name="conteudoPagina">
+
+			<p:outputLabel value="#{msg.dicaCadastro}"/><br/>
+	
+			<ui:remove>
+				<p:growl id="messages" showDetail="true" />
+				Latitude: Longitude:
+				-3.853808, -32.423786 Fernando de Noronha
+				-27.593500, -48.558540 Florianópolis
+				-8.0538900, -34.8811100 Recife
+			</ui:remove>
+			<p:panel id="mapa">
+		        <p:gmap id="gmap" center="-27.593500,-48.558540" zoom="13" type="HYBRID" style="width:100%;height:500px"
+	            	model="#{pontosMB.emptyModel}" onPointClick="handlePointClick(event);" widgetVar="map" />
+			</p:panel>
+	
+	        <h:form id="formulario" prependId="false" lang="#{msg.language}" style="display: block">
+				<p:dialog header="#{msg.cadpontosref}" widgetVar="dlg" showEffect="fade" modal="true">
+	            		<!-- Local -->
+	                    <h:outputLabel for="descricao" value="#{msg.descricao}:" />
+	                    <p:inputText id="descricao" value="#{pontosMB.local.descricao}" />
+	                    <br/>
+	                    <br/>
+	                    
+	                    <!-- Endereco -->
+	                    <p:fieldset legend="Endereço" style="margin-bottom:20px">
+		                    <h:panelGrid columns="2">
+			                    <h:outputLabel for="rua" value="#{msg.rua}:" />
+			                    <p:inputText id="rua" value="#{pontosMB.local.endereco.rua}" />
+	
+			                    <h:outputLabel for="numero" value="#{msg.numero}:" /> 
+			                    <p:inputText id="numero" value="#{pontosMB.local.endereco.numero}" label="#{msg.numero}" />
+	
+			                    <h:outputLabel for="bairro" value="#{msg.bairro}:" />
+			                    <p:inputText id="bairro" value="#{pontosMB.local.endereco.bairro}" />
+	
+			                    <h:outputLabel for="cidade" value="#{msg.cidade}:" />
+			                    <p:inputText id="cidade" value="#{pontosMB.local.endereco.cidade}" />
+	
+			                    <h:outputLabel for="estado" value="#{msg.estado}:" />
+			                    <p:inputText id="estado" value="#{pontosMB.local.endereco.estado}" />
+		                    </h:panelGrid>
+	                    </p:fieldset>
+	                    <h:outputLabel value="" />
+	                    
+	                    <!-- Classificacao -->
+						<p:fieldset id="classificacao" legend="#{msg.classificacao}" style="margin-bottom:20px">
+							<h:panelGrid columns="2">
+								<h:outputLabel for="tipo" value="#{msg.tipo}*:" />
+								<p:selectOneMenu id="tipo" value="#{pontosMB.local.classificacao.tipo}" label="#{msg.tipo}">
+									<f:selectItem itemLabel="#{msg.selecione}" itemValue=""/>
+									<f:selectItems value="#{pontosMB.local.classificacao.tipos}" 
+										var="t" itemLabel="#{t.item}" itemValue="#{t.valor}"/>
+									<p:ajax process="@this" update=":formulario:classificacao" />
+								</p:selectOneMenu>
+								
+								<h:outputLabel for="tamanho" value="#{msg.tamanho}:"  
+									rendered="#{pontosMB.local.classificacao.tipo eq 'residencial'}" />
+								<p:inputText id="tamanho" value="#{pontosMB.local.classificacao.tamanho}" label="#{msg.tamanho}" 
+									rendered="#{pontosMB.local.classificacao.tipo eq 'residencial'}"/>
+		
+								<h:outputLabel for="atividade" value="#{msg.atividade}:" 
+									rendered="#{pontosMB.local.classificacao.tipo eq 'comercial'}"/>
+								<p:inputText id="atividade" value="#{pontosMB.local.classificacao.atividade}" 
+									rendered="#{pontosMB.local.classificacao.tipo eq 'comercial'}"/>
+									
+							</h:panelGrid>
+						</p:fieldset>
+						<h:outputLabel value="" />
+	                    
+	                    <p:panel style="border: none;">
+	                        <p:commandButton value="#{msg.salvar}" actionListener="#{pontosMB.addMarker}" update="@(:formulario2:datatable)" oncomplete="markerAddComplete()"/>
+	                        <p:commandButton value="#{msg.cancelar}" onclick="return cancel()"/>
+	                    </p:panel>
+	
+		                <h:inputHidden id="lat" value="#{pontosMB.local.latitude}" />
+		                <h:inputHidden id="lng" value="#{pontosMB.local.longitude}" />
+		                
+	           			<p:ajax event="close" oncomplete="return cancel()"/>
+	       		</p:dialog>
+			</h:form>
+	        	
+	       	<br/>
+	       	<br/>
+	       	<h:form id="formulario2" prependId="false" lang="#{msg.language}" >
+	       	
+	        	<p:fieldset id="lspontos" legend="#{msg.lspontos}" style="margin-bottom:20px">
+	        	
+					<p:dataTable id="datatable" var="pontos"
+						value="#{pontosMB.lsLocalsTO}" paginator="true" rows="10" emptyMessage="#{msg.semregistros}"
+						draggableColumns="true" rowsPerPageTemplate="5,10,15"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+	
+							<f:facet name="header">
+				            	#{msg.lsprtitulo} 
+				        	</f:facet>
+	
+							<!-- Campo(s) ocultos -->
+							<p:column rendered="false" exportable="false">
+								<h:outputText value="#{pontos.id}" />
+							</p:column>
+	
+							<p:column headerText="#{msg.latitude}" sortBy="#{pontos.latitude}">
+								<h:outputText value="#{pontos.latitude}" />
+							</p:column>
+	
+							<p:column headerText="#{msg.longitude}" sortBy="#{pontos.longitude}">
+								<h:outputText value="#{pontos.longitude}" />
+							</p:column>
+	
+							<p:column headerText="#{msg.descricao}" sortBy="#{pontos.descricao}">
+								<h:outputText value="#{pontos.descricao}" />
+							</p:column>
+	
+							<p:column headerText="#{msg.cidade}" sortBy="#{pontos.endereco.cidade}">
+								<h:outputText value="#{pontos.endereco.cidade}" />
+							</p:column>
+	
+							<p:column headerText="#{msg.classificacao}" sortBy="#{pontos.classificacao.tipo}">
+								<h:outputText value="#{pontos.classificacao.tipo}" />
+							</p:column>
+	
+							<p:column style="width:150px" exportable="false">
+								<p:commandButton value="#{msg.editar}"
+									action="#{pontosMB.editar()}" ajax="false">
+									<f:param name="idPonto" value="#{pontos.id}" />
+								</p:commandButton>
+								<p:commandButton value="#{msg.excluir}"
+									actionListener="#{pontosMB.excluir(pontos)}"
+									ajax="false" update="datatable, mapa">
+								</p:commandButton>
+							</p:column>
+					</p:dataTable>
+				</p:fieldset>
+			</h:form>
+        
+		</ui:define>
+	</ui:composition>
+</h:body> 
+</html>

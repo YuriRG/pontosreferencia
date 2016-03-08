@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd">
+<entity class="br.com.visaogeo.entidade.Endereco">
+	
+	<table name="EENDERECO"></table>
+
+	<attributes>
+		<id name="id">
+			<generated-value strategy="IDENTITY"/>
+		</id>
+					
+		<basic name="rua">
+		    <column length="255"/>
+		</basic>
+					
+		<basic name="numero">
+		</basic>
+					
+		<basic name="bairro">
+		    <column length="255"/>
+		</basic>		
+					
+		<basic name="cidade">
+		    <column length="255"/>
+		</basic>		
+					
+		<basic name="estado">
+		    <column length="255"/>
+		</basic>		
+	</attributes>
+	
+</entity>
+</entity-mappings>

@@ -1,0 +1,96 @@
+@CHARSET "UTF-8";
+
+body {
+	margin: 0;
+	font-size: 12px;
+}
+
+#barraTitulo {
+	background-color: #ccc;
+	margin-bottom: 1px solid #eee;
+	height: 70px;
+}
+
+#conteudoPagina {
+	padding: 10px;
+}
+
+#rodapePagina {
+	text-align: center;
+}
+
+.readOnly {	
+	background-color: Gainsboro;
+}
+
+.imagemAdicionar {
+	height:32px;
+	width:32px;
+	position:relative;
+	top:12px;
+}
+
+.labelForCheckbox {
+	float:right;
+	position:relative;
+	top:3px;
+}
+
+.mensagenAlerta {
+	color: red;
+	font-family: 'New Century Schoolbook', serif;
+	font-style: oblique;
+	text-decoration: overline;
+	margin:auto;
+	width:70%;
+	background-color:#b0e0e6;
+}
+
+
+/*finalizar*/
+.alertbox {
+    color:#555;
+    border-radius:10px;
+    font-family:Tahoma,Geneva,Arial,sans-serif;font-size:11px;
+    padding:10px 10px 10px 36px;
+	margin:auto;
+	width:70%;  
+    font-weight:bold;
+    text-transform:uppercase;
+}
+
+.error {
+    /*background:#ffecec url('images/error.png') no-repeat 10px 50%;*/
+    background:#ffecec;
+    border:1px solid #f5aca6;
+}
+.success {
+    /*background:#e9ffd9 url('images/success.png') no-repeat 10px 50%;*/
+    background:#e9ffd9;
+    border:1px solid #a6ca8a;
+}
+.warning {
+    /*background:#fff8c4 url('images/warning.png') no-repeat 10px 50%;*/
+    background:#fff8c4;
+    border:1px solid #f2c779;
+}
+.notice {
+    /*background:#e3f7fc url('images/notice.png') no-repeat 10px 50%;*/
+    background:#e3f7fc;
+    border:1px solid #8ed9f6;
+}
+
+.relatorio {
+	width:95%;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.comboBox {
+	width:168px;	
+}
+
+.kanban {
+	width:20%;
+	display:inline;
+}
