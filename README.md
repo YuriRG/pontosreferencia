@@ -7,4 +7,4 @@ Projeto desenvolvido utilizando tecnologias: JavaEE6, Primefaces 5.1, Google Map
 
 Também desenvolvo um projeto pessoal que contém: Generic DAO, classes utilitario para resourcebundle, formatação e validação de campos.
 
-![alt tag](http://pontosreferencia/pontosreferencia.png)
+![alt tag](https://github.com/YuriRG/pontosreferencia/blob/master/pontosreferencia.png)
