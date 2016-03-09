@@ -6,13 +6,13 @@
     version="2.2">
     <application>
 	  <resource-bundle>
-		<base-name>br.com.visaogeo.resourcebundle</base-name>
+		<base-name>br.com.pontos.resourcebundle</base-name>
 		<var>msg</var>
 	   </resource-bundle>
     </application>
     <!-- 
     <lifecycle>
-    	<phase-listener>br.com.visaogeo.filtro.LifeCycleListener</phase-listener>
+    	<phase-listener>br.com.pontos.filtro.LifeCycleListener</phase-listener>
 	</lifecycle>
      -->
 </faces-config>
